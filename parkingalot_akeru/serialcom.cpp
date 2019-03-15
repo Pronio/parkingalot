@@ -27,7 +27,7 @@ int receive_serial(byte * buf, int buflen){
 
       if((len == buflen+1) && (buf[buflen+1] == END)){
         
-        Serial.write(buf,buflen+2);
+        //Serial.write(buf,buflen+2);
         unknown = 0;
         return 1;
         
