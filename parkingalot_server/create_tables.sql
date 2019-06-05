@@ -16,8 +16,8 @@ create table parking_space(
 	name						varchar(255),
 	full						boolean,
 	utilization					integer,
-	longitude 					varchar(10),
-	latitude					varchar(10),
+	longitude 					varchar(11),
+	latitude					varchar(11),
 	primary key(id,name),
 	foreign key (name) references device(name)
 );
