@@ -6,6 +6,7 @@
 #define N_SPACES 17
 #define N_BYTES 3
 #define N_BYTES_SIG 3
+#define SENSOR 2
 
 #define STR 0xF0
 #define END 0xFF 
@@ -16,7 +17,7 @@ Akeru akeru(RX, TX);
 enum condition free_condition=image;
 bool space_img[N_SPACES] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 bool space_sensor[N_SPACES] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-bool sensor_available[N_SPACES] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+bool sensor_available[N_SPACES] = {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0};
 bool space[N_SPACES] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 byte buf[N_BYTES+2];
 byte buf_sig[N_BYTES_SIG];
@@ -60,6 +61,11 @@ void downlink_request(){
     if (akeru.receive(&data))
     {
       Serial.println(data);
+
+      if((data[7]!='0')||(data[8]!='0')){
+        return;
+      }
+      
       if(data[2]=='0'){
         free_condition=both;  
       }else if(data[2]=='1'){
@@ -226,6 +232,8 @@ void bool_to_byte(byte * buf2, bool * b){
 void setup() {
   start_serial();
 
+  pinMode(SENSOR, INPUT);
+
   akeru.begin();
   akeru.echoOff();
 }
@@ -248,6 +256,12 @@ void loop() {
     }
     Serial.println();*/
   
+  }
+
+  if(!digitalRead(SENSOR)){
+    space_sensor[6]=1;
+  }else{
+    space_sensor[6]=0;
   }
 
   

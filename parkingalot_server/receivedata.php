@@ -9,7 +9,7 @@
 	catch(PDOException $exception){
 		http_response_code(500);
 		echo(json_encode(array("error" => $exception->getMessage())));
-		/*exit();*/
+		exit();
 
 	}
 
@@ -30,6 +30,14 @@
 	if($array==NULL){
 		http_response_code(400);
 		echo(json_encode(array("error" => "Bad JSON")));
+		exit();
+	}
+	
+	$message_bit=hexdec($array->Data[0]);
+	
+	if($message_bit<8){
+		http_response_code(200);
+		$connection=NULL;
 		exit();
 	}
 
